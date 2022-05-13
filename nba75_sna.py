@@ -254,6 +254,7 @@ positive_tweets = df[df['sentiment'] == 'Positive']['clean_tweets']
 negative_tweets = df[df['sentiment'] == 'Negative']['clean_tweets']
 neutral_tweets = df[df['sentiment'] == 'Neutral']['clean_tweets']
 
+#Counting the frequency of names in tweets with positive sentiment
 teams_list = ['Phoenix', 'Dallas', 'Memphis', 'Golden State', 'Miami', 'Philadelphia', 'Boston', 'Milwaukee']
 
 team_counter = []
@@ -276,6 +277,7 @@ for word in team_counter:
 
 print(dict)
 
+#Counting the frequency of names in tweets with negative sentiment
 teams_list = ['Phoenix', 'Dallas', 'Memphis', 'Golden State', 'Miami', 'Philadelphia', 'Boston', 'Milwaukee']
 
 team_counter = []
@@ -298,6 +300,7 @@ for word in team_counter:
 
 print(dict)
 
+#Counting the frequency of names  in tweets with neutral sentiment
 teams_list = ['Phoenix', 'Dallas', 'Memphis', 'Golden State', 'Miami', 'Philadelphia', 'Boston', 'Milwaukee']
 
 team_counter = []
@@ -334,6 +337,7 @@ positive_tweets_list = positive_tweets
 negative_tweets_list = negative_tweets
 neutral_tweets_list = neutral_tweets
 
+#Alternate method for tokenization
 pos_tokens=[]
 neg_tokens=[]
 neu_tokens=[]
@@ -353,24 +357,28 @@ for line in  neutral_tweets_list:
 #most common keywords
 from collections import Counter
 
+#method to tokenize text
 def get_tokens(docx,num=30):
   word_tokens = Counter(docx)
   most_common = word_tokens.most_common(num)
   result = dict(most_common)
   return result
 
+#Counting the frequeny of words in tweets with negative sentiments
 words_to_count = (word for word in neg_tokens if word[:1].isupper())
 c = Counter(words_to_count)
 print(c.most_common(10))
 pos_df = pd.DataFrame(c.most_common(10),columns=['words','scores'])
 print(pos_df)
 
+#Counting the frequeny of words in tweets with positive sentiments
 words_to_count = (word for word in pos_tokens if word[:1].isupper())
 c = Counter(words_to_count)
 print(c.most_common(10))
 neg_df = pd.DataFrame(c.most_common(10),columns=['words','scores'])
 print(neg_df)
 
+#Counting the frequeny of words in tweets with neutral sentiments
 words_to_count = (word for word in neu_tokens if word[:1].isupper())
 c = Counter(words_to_count)
 print(c.most_common(10))
@@ -386,49 +394,66 @@ print(neu_df)
 # neg_df = pd.DataFrame(most_common_neg_words.items(),columns=['words','scores'])
 # neu_df = pd.DataFrame(most_common_neu_words.items(),columns=['words','scores'])
 
+#Words in tweets with neutral sentiments
 neg_df['words']
 
+#Top words in tweets with negative sentiments
 plt.figure(figsize=(20,10))
 sb.barplot(x='words', y='scores', data=neg_df[1:20], color='blue')
 plt.xticks(rotation=45)
 plt.show()
 
+#Top words in tweets with positive sentiments
 plt.figure(figsize=(20,10))
 sb.barplot(x='words', y='scores', data=pos_df[1:20], color='blue')
 plt.xticks(rotation=45)
 plt.show()
 
+#Top words in tweets with neutral sentiments
 plt.figure(figsize=(20,10))
 sb.barplot(x='words', y='scores', data=neu_df[1:20], color='blue')
 plt.xticks(rotation=45)
 plt.show()
 
+#2-grams  of tweets with neutral sentiments
 pd.Series(nltk.ngrams(neu_df['words'], 2)).value_counts()[:10]
 
+#2-grams  of tweets with negative sentiments
 pd.Series(nltk.ngrams(neg_df['words'], 2)).value_counts()[:10]
 
+#2-grams  of tweets with positive sentiments
 pd.Series(nltk.ngrams(pos_df['words'], 2)).value_counts()[:10]
 
+#3-grams  of tweets with neutral sentiments
 pd.Series(nltk.ngrams(neu_df['words'], 3)).value_counts()[:10]
 
+#3-grams  of tweets with negative sentiments
 pd.Series(nltk.ngrams(neg_df['words'], 3)).value_counts()[:10]
 
+#3-grams  of tweets with positive sentiments
 pd.Series(nltk.ngrams(pos_df['words'], 3)).value_counts()[:10]
 
+#4-grams  of tweets with neutral sentiments
 pd.Series(nltk.ngrams(neu_df['words'], 4)).value_counts()[:10]
 
+#4-grams  of tweets with negative sentiments
 pd.Series(nltk.ngrams(neg_df['words'], 4)).value_counts()[:10]
 
+#4-grams  of tweets with positive sentiments
 pd.Series(nltk.ngrams(pos_df['words'], 4)).value_counts()[:10]
 
+#5-grams  of tweets with neutral sentiments
 pd.Series(nltk.ngrams(neu_df['words'], 5)).value_counts()[:10]
 
+#5-grams  of tweets with negative sentiments
 pd.Series(nltk.ngrams(neg_df['words'], 5)).value_counts()[:10]
 
+#5-grams of tweets with positive sentiments
 pd.Series(nltk.ngrams(pos_df['words'], 5)).value_counts()[:10]
 
 from wordcloud import WordCloud
 
+#a method that plots word cloud for input text
 def plot_wordcloud(docx):
   mywordcloud = WordCloud().generate(docx)
   plt.figure(figsize=(20,10))
@@ -436,11 +461,14 @@ def plot_wordcloud(docx):
   plt.axis('off')
   plt.show()
 
+#plot the word cloud/ bag of words for tweets with positive sentiments
 pos_docx= ' '.join(pos_tokens)
 plot_wordcloud(pos_docx)
 
+#plot the word cloud/ bag of words for tweets with negative sentiments
 neg_docx= ' '.join(neg_tokens)
 plot_wordcloud(neg_docx)
 
+#plot the word cloud/ bag of words for tweets with neutral sentiments
 neu_docx= ' '.join(neu_tokens)
 plot_wordcloud(neu_docx)
